@@ -1,32 +1,24 @@
-document.getElementById('student-form').addEventListener('submit', async function(event) {
-    event.preventDefault();
-
-    const studentId = document.getElementById('studentId').value;
-    if (!studentId) {
-        alert("Please enter a Student ID.");
-        return;
-    }
-
-    try {
-        const functionUrl = `https://feeinfo.azurewebsites.net/api/http_trigger?student_id=${studentId}`;
-        console.log("Making request to:", functionUrl);  // Log the URL to verify it's correct
-
-        const response = await fetch(functionUrl);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log("Response Data:", data);  // Log the returned data to see it
-
-        // Update the UI with the status
-        document.getElementById('status').style.display = 'block';
-        document.getElementById('name').innerText = data.Name;
-        document.getElementById('fee-status').innerText = data.Status;
-    } catch (error) {
-        console.error("Error communicating with the server:", error);
-        alert("An error occurred while fetching the fee status.");
-    }
+document.getElementById('getFeeStatusButton').addEventListener('click', function() {
+    const studentId = document.getElementById('studentIdInput').value; // Get student ID from input field
+    
+    const functionUrl = `https://feeinfo.azurewebsites.net/api/http_trigger?student_id=${studentId}`;
+    
+    fetch(functionUrl)
+        .then(response => response.json())
+        .then(data => {
+            // Handle the response (display the fee details)
+            if (data.Status) {
+                document.getElementById('studentName').innerText = `Name: ${data.Name}`;
+                document.getElementById('feeStatus').innerText = `Fee Status: ${data.Status}`;
+                document.getElementById('totalFee').innerText = `Total Fee: $${data.TotalFee}`;
+                document.getElementById('paidAmount').innerText = `Paid: $${data.PaidAmount}`;
+                document.getElementById('remainingAmount').innerText = `Remaining: $${data.RemainingAmount}`;
+            } else {
+                document.getElementById('feeStatus').innerText = 'No data found';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('feeStatus').innerText = 'Error communicating with the server.';
+        });
 });
-
