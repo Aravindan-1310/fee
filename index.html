@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Fee Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Fee Status</h1>
+    <form id="student-form">
+        <label for="studentId">Enter your Student ID:</label>
+        <input type="text" id="studentId" required>
+        <button type="submit">Check Status</button>
+    </form>
+
+    <div id="status">
+        <p><strong>Student Name:</strong> <span id="name"></span></p>
+        <p><strong>Fee Status:</strong> <span id="fee-status"></span></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
